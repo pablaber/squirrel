@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "start": "turbo run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
