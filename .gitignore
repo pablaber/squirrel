@@ -1,0 +1,12 @@
+#Turbo
+.turbo
+
+# Node Modules
+node_modules
+
+# Environment Variables
+.env*
+!.env.example
+
+# Build
+dist
