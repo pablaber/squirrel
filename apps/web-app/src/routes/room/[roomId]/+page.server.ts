@@ -7,7 +7,7 @@ export const load = async ({ params, ...rest }) => {
 
 	const { roomId } = params;
 
-	const room = await db.query.rooms.findFirst({
+	const room = await db().query.rooms.findFirst({
 		where: (rooms, { eq }) => eq(rooms.id, roomId),
 		with: {
 			messages: true

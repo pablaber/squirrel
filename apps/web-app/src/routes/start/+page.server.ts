@@ -30,7 +30,7 @@ export const actions = {
 		const ownerCryptoKey = await cryptoUtils.importKey(ownerPublicKey);
 		const ownerFingerprint = await cryptoUtils.calculateFingerprint(ownerCryptoKey);
 
-		const [{ roomId }] = await db
+		const [{ roomId }] = await db()
 			.insert(schema.rooms)
 			.values({
 				id: newRoomId,

@@ -50,7 +50,8 @@ app.get(
               message,
             })
           );
-          db.insert(schema.messages)
+          db()
+            .insert(schema.messages)
             .values(message)
             .then(() => {
               logger.debug({
@@ -58,7 +59,7 @@ app.get(
                 messageId: message.id,
               });
             })
-            .catch((error) => {
+            .catch((error: unknown) => {
               logger.error({
                 message: "failed to save message to database",
                 error,

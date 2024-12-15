@@ -90,8 +90,8 @@ export function createCryptoUtils(subtle: SubtleCrypto) {
 	 */
 	async function decryptMessage(message: string, privateKey: CryptoKey, publicKey: CryptoKey) {
 		const [ivBase64, encryptedBase64] = message.split('.');
-		let iv: ArrayBuffer;
-		let encrypted: ArrayBuffer;
+		let iv: BufferSource;
+		let encrypted: BufferSource;
 		try {
 			iv = base64ToArrayBuffer(ivBase64);
 			encrypted = base64ToArrayBuffer(encryptedBase64);

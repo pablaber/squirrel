@@ -39,8 +39,8 @@ export async function POST({ request, params }) {
 	}
 	const guestFingerprint = await cryptoUtils.calculateFingerprint(guestKey);
 
-	const existingRoom = await db.query.rooms.findFirst({
-		where: (rooms, { eq }) =>eq(rooms.id, roomId)
+	const existingRoom = await db().query.rooms.findFirst({
+		where: (rooms, { eq }) => eq(rooms.id, roomId)
 	});
 
 	if (!existingRoom) {
@@ -61,7 +61,7 @@ export async function POST({ request, params }) {
 		);
 	}
 
-	const [updatedRoom] = await db
+	const [updatedRoom] = await db()
 		.update(rooms)
 		.set({
 			guestPublicKey,

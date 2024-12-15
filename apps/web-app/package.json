@@ -10,7 +10,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint ."
+		"lint": "prettier --check . && eslint .",
+		"turbo:build": "turbo build --filter=web-app"
 	},
 	"dependencies": {
 		"@fontsource/roboto": "^5.1.0",
