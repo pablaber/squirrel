@@ -11,20 +11,21 @@ const errorMap: z.ZodErrorMap = (issue, ctx) => {
 
 z.setErrorMap(errorMap);
 
-export const serverConfigSchema = z.object({
-	DATABASE_URL: z.string(),
-	MASTER_PASSWORD: z.string().default('')
-});
+export const getServerConfig = () => {
+	const serverConfigSchema = z.object({
+		DATABASE_URL: z.string(),
+		MASTER_PASSWORD: z.string().default('')
+	});
+	const { data: serverEnv, error } = serverConfigSchema.safeParse(staticPrivateEnv);
 
-const { data: serverEnv, error } = serverConfigSchema.safeParse(staticPrivateEnv);
+	if (error) {
+		throw new Error(error.errors[0].message);
+	}
 
-if (error) {
-	throw new Error(error.errors[0].message);
-}
+	const hashedMasterPassword = createHash('sha256').update(serverEnv.MASTER_PASSWORD).digest('hex');
 
-const hashedMasterPassword = createHash('sha256').update(serverEnv.MASTER_PASSWORD).digest('hex');
-
-export const serverConfig = {
-	databaseUrl: serverEnv.DATABASE_URL,
-	hashedMasterPassword
-} as const;
+	return {
+		databaseUrl: serverEnv.DATABASE_URL,
+		hashedMasterPassword
+	} as const;
+};

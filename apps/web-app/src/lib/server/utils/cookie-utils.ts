@@ -1,7 +1,7 @@
 import type { Cookies } from '@sveltejs/kit';
 import { createHash } from 'node:crypto';
 import { hoursToSeconds } from 'date-fns';
-import { serverConfig } from '../server-config';
+import { getServerConfig } from '../server-config';
 
 const COOKIE_PREFIX = `sq-`;
 
@@ -19,6 +19,8 @@ const cookieOptions = (options: Partial<CookieOptions> = {}) => ({
 });
 
 export function init(cookies: Cookies) {
+	const serverConfig = getServerConfig();
+
 	function setRoomIdCookie(roomId: string, password?: string) {
 		cookies.set(roomCookie(roomId), password ?? '', cookieOptions());
 	}
