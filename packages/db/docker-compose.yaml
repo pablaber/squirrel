@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: secret_squirrel_db
+    environment:
+      POSTGRES_USER: squirrel
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: secret_squirrel
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
