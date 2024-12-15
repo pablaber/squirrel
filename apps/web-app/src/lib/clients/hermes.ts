@@ -1,7 +1,6 @@
 import { clientConfig } from '$lib/config/client-config';
 import { z } from 'zod';
-import { generalUtils } from '$lib/utils';
-
+import { ids } from '@squirrel/core';
 type HermesOptions = {
 	roomId: string;
 	fingerprint: string;
@@ -61,7 +60,7 @@ export class Hermes {
 
 	sendMessage(message: string) {
 		verifySocket(this.socket);
-		const messageId = generalUtils.generateMessageId();
+		const messageId = ids.generateMessageId();
 		const messageData = {
 			id: messageId,
 			content: message,

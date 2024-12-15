@@ -15,10 +15,10 @@
 	},
 	"dependencies": {
 		"@fontsource/roboto": "^5.1.0",
+		"@squirrel/core": "workspace:*",
 		"@squirrel/db": "workspace:*",
 		"date-fns": "^4.1.0",
 		"drizzle-orm": "~0.38.2",
-		"nanoid": "~5.0.9",
 		"zod": "~3.24.1"
 	},
 	"devDependencies": {

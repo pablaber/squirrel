@@ -1,13 +1,11 @@
-import { customAlphabet } from "nanoid";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-
-const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 10);
+import { ids } from "@squirrel/core";
 
 export const users = pgTable("users", {
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => nanoid()),
+    .$defaultFn(() => ids.generate(10)),
   username: text("username").unique(),
   password: text("password"),
   createdAt: timestamp("created_at").defaultNow().notNull(),

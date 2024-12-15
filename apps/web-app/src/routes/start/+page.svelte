@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
   import { createCryptoUtils, generalUtils, storageUtils} from '$lib/utils';
+	import { ids } from '@squirrel/core';
 
 	let keyPair = $state<CryptoKeyPair | null>(null);
 	let publicKeyBase64Jwk = $state<string | null>(null);
 	
-	let newRoomId = $state(generalUtils.generateRoomId());
+	let newRoomId = $state(ids.generateRoomId());
 
 	onMount(async () => {
 		const cryptoUtils = createCryptoUtils(crypto.subtle);

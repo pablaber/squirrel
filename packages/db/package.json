@@ -26,9 +26,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@squirrel/core": "workspace:*",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.2",
-    "nanoid": "^5.0.9",
     "pg": "^8.13.1"
   },
   "devDependencies": {
