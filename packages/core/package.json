@@ -21,7 +21,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "nanoid": "^5.0.9"
+    "nanoid": "^5.0.9",
+    "zod": "~3.24.1"
   },
   "devDependencies": {
     "tsx": "^4.19.2",
