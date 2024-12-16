@@ -8,7 +8,6 @@
     "check-types": "tsc --noEmit",
     "start": "tsx main.ts",
     "dev": "tsx watch main.ts | pino-pretty",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "turbo:build": "turbo build --filter=message-service"
   },
   "keywords": [],
