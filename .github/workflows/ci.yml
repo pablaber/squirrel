@@ -27,14 +27,14 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
  
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
       - name: Check Types
-        run: npm run check-types
+        run: pnpm run check-types
 
       - name: Test
-        run: npm run test
+        run: pnpm run test
 
