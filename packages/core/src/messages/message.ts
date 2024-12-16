@@ -30,14 +30,16 @@ const messageSchema = z.union([messageActivitySchema, messageMessageSchema]);
 /**
  * A class used to parse and create string socket messages.
  */
-class MessageBase {
+export class MessageBase {
   public type: MessageType;
   public roomId: string;
   public ts: Date;
+  public sender: string;
 
   constructor(options: MessageOptions) {
     this.type = options.type;
     this.roomId = options.roomId;
+    this.sender = options.sender;
     this.ts = options.ts;
   }
 
@@ -75,6 +77,13 @@ class MessageBase {
       messageObject.sender = additionalOptions.sender;
     }
 
+    if (
+      typeof messageObject.ts === "string" ||
+      typeof messageObject.ts === "number"
+    ) {
+      messageObject.ts = new Date(messageObject.ts);
+    }
+
     const parsedMessage = messageSchema.parse(messageObject);
     if (parsedMessage.type === "message") {
       return new MessageMessage(parsedMessage);
@@ -93,12 +102,10 @@ class MessageBase {
 }
 
 export class MessageMessage extends MessageBase {
-  public sender: string;
   public content: string;
 
   constructor(options: MessageMessageType) {
     super(options);
-    this.sender = options.sender;
     this.content = options.content;
   }
 }
