@@ -19,8 +19,7 @@
     "env:production": "cp .env.production .env",
     "db:generate": "pnpm run env:local && drizzle-kit generate --config ./src/drizzle.config.ts",
     "db:migrate": "pnpm run env:local && drizzle-kit migrate --config ./src/drizzle.config.ts",
-    "db:migrate:production": "pnpm run env:production && drizzle-kit migrate --config ./src/drizzle.config.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "db:migrate:production": "pnpm run env:production && drizzle-kit migrate --config ./src/drizzle.config.ts"
   },
   "keywords": [],
   "author": "",
