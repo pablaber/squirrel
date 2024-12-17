@@ -14,14 +14,14 @@ app.get("/", (c) => {
   return c.text("Hello World!");
 });
 
+const webSocketService = new WebSocketService();
+
 app.get(
   "/ws/room/:roomId",
   upgradeWebSocket((c) => {
     const { roomId } = c.req.param();
     const { fingerprint } = c.req.query();
 
-    const createServerMessage = WsMessage.createServerMessageBuilder(roomId);
-    const webSocketService = new WebSocketService(createServerMessage);
     const createErrorMessage = WsMessage.createErrorMessageBuilder(roomId);
 
     return {
@@ -34,7 +34,10 @@ app.get(
       },
       onMessage(event) {
         const rawMessage = event.data.toString();
-        const [error, message] = WsMessage.fromWebSocketString(rawMessage);
+        const [error, message] = WsMessage.fromWebSocketString(rawMessage, {
+          roomId,
+          sender: fingerprint,
+        });
         if (error) {
           const errorMessage = createErrorMessage(error);
           webSocketService.sendMessageToRoom(

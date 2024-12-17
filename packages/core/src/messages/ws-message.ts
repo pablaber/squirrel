@@ -4,8 +4,10 @@ import { generateMessageId } from "../ids/ids";
 
 /* Types */
 
-type WsMessageType = "client" | "server" | "error";
-type WsMessageOptions = {
+export type WsMessageType = "client" | "server" | "error";
+
+// Exported for tests
+export type WsMessageOptions = {
   id: string;
   type: WsMessageType;
   roomId: string;
@@ -61,7 +63,7 @@ export class WsMessage {
     const { data: messageOptions, error } = z
       .object({
         id: z.string().length(10),
-        type: z.enum(["client", "server"]),
+        type: z.enum(["client", "server", "error"]).optional(),
         roomId: z.string().optional(),
         sender: z.string().optional(),
         ts: z.number(),
@@ -74,10 +76,13 @@ export class WsMessage {
       const firstIssue = issues[0];
       let errorMessage = "Unknown message schema error";
       if (firstIssue) {
-        errorMessage = `Schema error for ${firstIssue.path.join(".")}: ${firstIssue.message}`;
+        errorMessage = `Schema error for "${firstIssue.path.join(".")}": ${firstIssue.message}`;
       }
       return [
-        new WsMessageError(errorMessage, WsMessageErrorCodes.MALFORMED_MESSAGE),
+        new WsMessageError(
+          errorMessage,
+          WsMessageErrorCodes.INVALID_MESSAGE_SCHEMA
+        ),
         null,
       ];
     }
@@ -90,7 +95,7 @@ export class WsMessage {
     if (roomId === undefined) {
       return [
         new WsMessageError(
-          "Schema error for roomId: roomId is required or must be inferred from the server",
+          'Schema error for "roomId": roomId is required or must be inferred from the server',
           WsMessageErrorCodes.INVALID_MESSAGE_SCHEMA
         ),
         null,
@@ -103,14 +108,14 @@ export class WsMessage {
     if (sender === undefined) {
       return [
         new WsMessageError(
-          "Schema error for sender: sender is required or must be inferred from the server",
+          'Schema error for "sender": sender is required or must be inferred from the server',
           WsMessageErrorCodes.INVALID_MESSAGE_SCHEMA
         ),
         null,
       ];
     }
 
-    const { id, type, ts, content, metadata } = messageOptions;
+    const { id, type = "client", content, metadata, ts } = messageOptions;
     return [
       null,
       new WsMessage({
@@ -202,6 +207,7 @@ export class WsMessage {
    */
   toWebSocketString() {
     return JSON.stringify({
+      id: this.id,
       type: this.type,
       roomId: this.roomId,
       sender: this.sender,

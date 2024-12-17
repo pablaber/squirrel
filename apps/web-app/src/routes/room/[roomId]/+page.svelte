@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createCryptoUtils, storageUtils } from '$lib/utils';
 	import { onMount } from 'svelte';
-	import ChatRoom from '$lib/components/ChatRoom.svelte';
+	import { ChatRoom } from '$lib/components';
 	import { browser } from '$app/environment';
 
   let cryptoUtils: ReturnType<typeof createCryptoUtils>;
@@ -40,6 +40,7 @@
 	let role = $derived(derivedRole());
 
 	$inspect(role);
+	$inspect(partnerPublicKey);
 
 	async function importPartnerPublicKey() {
 		if (partnerPublicKey === null && room.guestPublicKey) {
@@ -88,7 +89,7 @@
 </div>
 
 {#if role === 'owner' || role === 'guest'}
-	{#if keyPair && partnerPublicKey && fingerprint}
+	{#if keyPair && fingerprint}
 		<ChatRoom
 			{room}
 			ownPrivateKey={keyPair.privateKey}

@@ -4,17 +4,12 @@ import { WsMessage } from "@squirrel/core";
 
 type Fingerprint = string;
 type RoomClients = Map<Fingerprint, WSContext<WebSocket>>;
-type ServerMessageBuilder = ReturnType<
-  typeof WsMessage.createServerMessageBuilder
->;
 
 export class WebSocketService {
   private clients: Map<string, RoomClients>;
-  private createServerMessage: ServerMessageBuilder;
 
-  constructor(createServerMessage: ServerMessageBuilder) {
+  constructor() {
     this.clients = new Map<string, RoomClients>();
-    this.createServerMessage = createServerMessage;
   }
 
   public getRoomClients(roomId: string): RoomClients {
@@ -33,12 +28,19 @@ export class WebSocketService {
   ) {
     const roomClients = this.getRoomClients(roomId);
     roomClients.set(fingerprint, client);
-    const serverMessage = this.createServerMessage(
+
+    const createServerMessage = WsMessage.createServerMessageBuilder(roomId);
+    const serverMessage = createServerMessage(
       `Client ${fingerprint} connected`
     );
-    this.sendMessageToRoom(roomId, "server", serverMessage.toWebSocketString());
+    this.sendMessageToRoom(
+      roomId,
+      "server",
+      serverMessage.toWebSocketString(),
+      fingerprint
+    );
     logger.info(
-      `Client connected to room ${roomId} with fingerprint ${fingerprint}`
+      `Client connected to room ${roomId} with fingerprint ${fingerprint}. ${roomClients.size} clients in room`
     );
   }
   public removeClientFromRoom(roomId: string, fingerprint: Fingerprint) {
@@ -51,7 +53,8 @@ export class WebSocketService {
       this.clients.delete(roomId);
       logger.info(`Room ${roomId} is empty, deleting`);
     } else {
-      const serverMessage = this.createServerMessage(
+      const createServerMessage = WsMessage.createServerMessageBuilder(roomId);
+      const serverMessage = createServerMessage(
         `Client ${fingerprint} disconnected`
       );
       this.sendMessageToRoom(
@@ -65,12 +68,21 @@ export class WebSocketService {
   public sendMessageToRoom(
     roomId: string,
     senderFingerprint: Fingerprint,
-    message: string
+    message: string,
+    excludeFingerprint: Fingerprint | null = null
   ) {
-    const roomClients = this.getRoomClients(roomId);
-    roomClients.forEach((client) => client.send(message));
-    logger.info(
-      `Message sent to room ${roomId} from ${senderFingerprint}: ${message}`
+    const roomClientsToSend = new Map(this.getRoomClients(roomId));
+    console.log("roomClients", Array.from(roomClientsToSend.keys()));
+
+    if (excludeFingerprint) {
+      roomClientsToSend.delete(excludeFingerprint);
+    }
+
+    console.log("roomClients", Array.from(roomClientsToSend.keys()));
+
+    roomClientsToSend.forEach((client) => client.send(message));
+    logger.debug(
+      `Message sent to ${roomClientsToSend.size} clients in room ${roomId} from ${senderFingerprint}: ${message}`
     );
   }
 }

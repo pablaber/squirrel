@@ -17,7 +17,7 @@ function base64ToJson(base64: string) {
 /**
  * Converts an ArrayBuffer to a base64 encoded string
  */
-function arrayBufferToBase64(arrayBuffer: ArrayBuffer) {
+function arrayBufferToBase64(arrayBuffer: ArrayBuffer | Uint8Array) {
 	return btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
 }
 

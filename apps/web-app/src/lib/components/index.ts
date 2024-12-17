@@ -1,1 +1,1 @@
-export * from './ChatRoom.svelte';
+export { default as ChatRoom } from './ChatRoom/ChatRoom.svelte';
