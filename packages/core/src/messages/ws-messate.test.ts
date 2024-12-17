@@ -176,7 +176,7 @@ describe("WsMessage", () => {
       expect(error).toBeInstanceOf(WsMessageError);
       error = error as WsMessageError;
       expect(error.code).toBe(WsMessageErrorCodes.INVALID_MESSAGE_SCHEMA);
-      expect(error.message).toBe('Schema error for "type": Required');
+      expect(error.message).toBe('Schema error for "ts": Required');
       expect(parsedMessage).toBeNull();
     });
 
