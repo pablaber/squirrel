@@ -1,15 +1,14 @@
 import { Hono } from "hono";
 import { createNodeWebSocket } from "@hono/node-ws";
-import { initMessageParser, messageParserErrorCodes } from "./message-parser";
+import type { WSContext } from "hono/ws";
+import { db, schema } from "@squirrel/db";
+import { WsMessage } from "@squirrel/core";
 import { WebSocketService } from "./web-socket-service";
 import { logger } from "./logger";
-import { db, schema} from '@squirrel/db';
-import type { WSContext } from "hono/ws";
 
 const app = new Hono();
 
 const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({ app });
-const webSocketService = new WebSocketService();
 
 app.get("/", (c) => {
   return c.text("Hello World!");
@@ -21,7 +20,9 @@ app.get(
     const { roomId } = c.req.param();
     const { fingerprint } = c.req.query();
 
-    const messageParser = initMessageParser(roomId, fingerprint);
+    const createServerMessage = WsMessage.createServerMessageBuilder(roomId);
+    const webSocketService = new WebSocketService(createServerMessage);
+    const createErrorMessage = WsMessage.createErrorMessageBuilder(roomId);
 
     return {
       onOpen(_event, client) {
@@ -33,26 +34,29 @@ app.get(
       },
       onMessage(event) {
         const rawMessage = event.data.toString();
-        const [error, message] = messageParser.parseMessage(rawMessage);
+        const [error, message] = WsMessage.fromWebSocketString(rawMessage);
         if (error) {
-          logger.error(error.asLogObject());
+          const errorMessage = createErrorMessage(error);
           webSocketService.sendMessageToRoom(
             roomId,
             fingerprint,
-            error.asWebSocketMessage()
+            errorMessage.toWebSocketString()
           );
         } else if (message) {
           webSocketService.sendMessageToRoom(
             roomId,
             fingerprint,
-            JSON.stringify({
-              success: true,
-              message,
-            })
+            message.toWebSocketString()
           );
           db()
             .insert(schema.messages)
-            .values(message)
+            .values({
+              id: message.id,
+              roomId: message.roomId,
+              sender: message.sender,
+              content: message.content,
+              ts: message.ts,
+            })
             .then(() => {
               logger.debug({
                 message: "saved message to database",
@@ -67,14 +71,11 @@ app.get(
               // TODO: send error to client about db save
             });
         } else {
-          const error = messageParser.createError(
-            "Message was undefined",
-            messageParserErrorCodes.UNKNOWN_ERROR
-          );
+          const errorMessage = createErrorMessage();
           webSocketService.sendMessageToRoom(
             roomId,
             fingerprint,
-            error.asWebSocketMessage()
+            errorMessage.toWebSocketString()
           );
         }
       },

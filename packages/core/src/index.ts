@@ -1,2 +1,5 @@
 export * as ids from "./ids/ids";
-export * as messages from "./messages/message";
+
+// Web Socket Messages
+export { WsMessage } from "./messages/ws-message";
+export { WsMessageErrorCodes } from "./messages/ws-message-errors";

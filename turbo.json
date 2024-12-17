@@ -5,7 +5,8 @@
       "outputs": ["dist/**"]
     },
     "dev": {
-      "dependsOn": ["^dev"]
+      "dependsOn": ["^dev"],
+      "persistent": true
     },
     "check-types": {
       "dependsOn": ["^check-types"]
