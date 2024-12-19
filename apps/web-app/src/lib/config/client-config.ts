@@ -8,5 +8,5 @@ export const clientConfigSchema = z.object({
 const clientEnv = clientConfigSchema.parse(staticPublicEnv);
 
 export const clientConfig = {
-	messageServiceUrlBase: clientEnv.PUBLIC_MESSAGE_SERVICE_URL_BASE,
+	messageServiceUrlBase: clientEnv.PUBLIC_MESSAGE_SERVICE_URL_BASE
 } as const;

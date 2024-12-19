@@ -1,3 +1,3 @@
-import { clientConfig } from "./client-config";
+import { clientConfig } from './client-config';
 
 export { clientConfig };

@@ -5,7 +5,7 @@
 	let { message } = $props<{ message: RoomMessage }>();
 </script>
 
-<div class="mx-1 flex flex-row gap-2 h-6 items-center">
+<div class="mx-1 flex h-6 flex-row items-center gap-2">
 	{#if message.type === 'client'}
 		<span class="font-mono text-gray-500">{`${generalUtils.niceFingerprint(message.sender)}:`}</span
 		>

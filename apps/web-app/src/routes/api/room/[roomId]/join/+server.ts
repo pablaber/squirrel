@@ -27,7 +27,7 @@ export async function POST({ request, params }) {
 
 	let guestKey: CryptoKey;
 	try {
-			guestKey = await cryptoUtils.importKey(guestPublicKey);
+		guestKey = await cryptoUtils.importKey(guestPublicKey);
 	} catch (e) {
 		console.error(e);
 		return Response.json(
