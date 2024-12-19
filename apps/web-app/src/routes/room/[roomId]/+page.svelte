@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { createCryptoUtils, storageUtils } from '$lib/utils';
+	import { createCryptoUtils, storageUtils } from '$lib/utils';
 	import { onMount } from 'svelte';
 	import { ChatRoom } from '$lib/components';
 	import { browser } from '$app/environment';
 
-  let cryptoUtils: ReturnType<typeof createCryptoUtils>;
+	let cryptoUtils: ReturnType<typeof createCryptoUtils>;
 	if (browser) {
 		cryptoUtils = createCryptoUtils(crypto.subtle);
 	}
@@ -17,7 +17,6 @@
 	let partnerPublicKey = $state<CryptoKey | null>(null);
 	let fingerprint = $state<string | null>(null);
 	let room = $state(roomData);
-
 
 	type RoomRoles = 'owner' | 'guest' | 'new-guest' | 'loading' | 'not-authorized';
 	function derivedRole(): RoomRoles {
@@ -90,11 +89,6 @@
 
 {#if role === 'owner' || role === 'guest'}
 	{#if keyPair && fingerprint}
-		<ChatRoom
-			{room}
-			ownPrivateKey={keyPair.privateKey}
-			partnerPublicKey={partnerPublicKey}
-			{fingerprint}
-		/>
+		<ChatRoom {room} ownPrivateKey={keyPair.privateKey} {partnerPublicKey} {fingerprint} />
 	{/if}
 {/if}

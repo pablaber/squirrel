@@ -6,7 +6,7 @@
 </script>
 
 <div class="flex h-screen flex-col items-center justify-center">
-  <div class="h-10"></div>
+	<div class="h-10"></div>
 	<h1 class="text-2xl font-bold">Enter your master password</h1>
 	<form class="sq-form" method="POST">
 		<input type="password" name="password" />

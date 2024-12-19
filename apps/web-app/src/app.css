@@ -6,21 +6,25 @@
 @import '@fontsource/roboto';
 
 @layer base {
-  body {
-    font-family: 'Roboto', sans-serif;
-  }
+	body {
+		font-family: 'Roboto', sans-serif;
+	}
 }
 
 @layer components {
-  .sq-mono {
-    font-family: 'Roboto Mono', monospace;
-  }
+	.sq-squirrel-logo {
+		font-family: 'Pacifico', cursive;
+	}
 
-  .sq-form input:not([type="hidden"]) {
-    @apply rounded-md border border-gray-300 p-2;
-  }
+	.sq-mono {
+		font-family: 'Roboto Mono', monospace;
+	}
 
-  .sq-form button {
-    @apply rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600;
-  }
+	.sq-form input:not([type='hidden']) {
+		@apply rounded-md border border-gray-300 p-2;
+	}
+
+	.sq-form button {
+		@apply rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600;
+	}
 }

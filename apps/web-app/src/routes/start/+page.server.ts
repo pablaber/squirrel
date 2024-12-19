@@ -3,6 +3,7 @@ import { db, schema } from '@squirrel/db';
 import { createCryptoUtils } from '$lib/utils';
 import { passwordUtils, cookieUtils } from '$lib/server/utils';
 import crypto from 'node:crypto';
+import '@fontsource/pacifico';
 
 const cryptoUtils = createCryptoUtils(crypto.webcrypto.subtle as SubtleCrypto);
 
