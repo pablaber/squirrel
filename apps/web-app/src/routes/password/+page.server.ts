@@ -28,7 +28,7 @@ export const actions = {
 		}
 
 		return fail(401, {
-			message: 'Invalid password.'
+			errorMessage: 'invalid password'
 		});
 	}
 };
