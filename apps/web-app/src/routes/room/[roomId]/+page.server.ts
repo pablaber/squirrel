@@ -35,7 +35,10 @@ export const load = async ({ params, ...rest }) => {
 		};
 	}
 
-	const correctPasswordHash = passwordUtils.verifyPassword(cookiePassword, room.password);
+	const correctPasswordHash = passwordUtils.verifyPassword(
+		cookiePassword,
+		room.password
+	);
 
 	return {
 		room,

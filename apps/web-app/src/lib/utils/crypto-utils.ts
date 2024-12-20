@@ -70,7 +70,11 @@ export function createCryptoUtils(subtle: SubtleCrypto) {
 		);
 	}
 
-	async function encryptMessage(message: string, publicKey: CryptoKey, privateKey: CryptoKey) {
+	async function encryptMessage(
+		message: string,
+		publicKey: CryptoKey,
+		privateKey: CryptoKey
+	) {
 		const derivedKey = await getDerivedKey(publicKey, privateKey);
 		const iv = generateIv();
 		const encrypted = await subtle.encrypt(
@@ -88,7 +92,11 @@ export function createCryptoUtils(subtle: SubtleCrypto) {
 	/**
 	 * Decrypts a message using the supplied private and public keys
 	 */
-	async function decryptMessage(message: string, privateKey: CryptoKey, publicKey: CryptoKey) {
+	async function decryptMessage(
+		message: string,
+		privateKey: CryptoKey,
+		publicKey: CryptoKey
+	) {
 		const [ivBase64, encryptedBase64] = message.split('.');
 		let iv: BufferSource;
 		let encrypted: BufferSource;
@@ -100,7 +108,11 @@ export function createCryptoUtils(subtle: SubtleCrypto) {
 		}
 
 		const derivedKey = await getDerivedKey(publicKey, privateKey);
-		const decrypted = await subtle.decrypt({ name: 'AES-GCM', iv }, derivedKey, encrypted);
+		const decrypted = await subtle.decrypt(
+			{ name: 'AES-GCM', iv },
+			derivedKey,
+			encrypted
+		);
 		return new TextDecoder().decode(decrypted);
 	}
 

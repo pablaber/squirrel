@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { createCryptoUtils, storageUtils } from '$lib/utils';
+	import { createCryptoUtils, storageUtils } from '$lib/utils';
 	import { onMount } from 'svelte';
 	import { ChatRoom } from '$lib/components';
 	import { browser } from '$app/environment';
 
-  let cryptoUtils: ReturnType<typeof createCryptoUtils>;
+	let cryptoUtils: ReturnType<typeof createCryptoUtils>;
 	if (browser) {
 		cryptoUtils = createCryptoUtils(crypto.subtle);
 	}
@@ -18,43 +18,31 @@
 	let fingerprint = $state<string | null>(null);
 	let room = $state(roomData);
 
+	type RoomState =
+		| 'owner'
+		| 'guest'
+		| 'new-guest'
+		| 'loading'
+		| 'not-authorized';
 
-	type RoomRoles = 'owner' | 'guest' | 'new-guest' | 'loading' | 'not-authorized';
-	function derivedRole(): RoomRoles {
+	let roomState: RoomState = $derived.by(() => {
 		if (!keyPair || !fingerprint) return 'loading';
-
-		if (room.ownerFingerprint === fingerprint) {
-			return 'owner';
-		}
-
-		if (!room.guestFingerprint) {
-			return 'new-guest';
-		}
-
-		if (room.guestFingerprint === fingerprint) {
-			return 'guest';
-		}
-
+		if (room.ownerFingerprint === fingerprint) return 'owner';
+		if (!room.guestFingerprint) return 'new-guest';
+		if (room.guestFingerprint === fingerprint) return 'guest';
 		return 'not-authorized';
-	}
-	let role = $derived(derivedRole());
-
-	$inspect(role);
-	$inspect(partnerPublicKey);
+	});
+	let isAuthorized = $derived(roomState === 'owner' || roomState === 'guest');
 
 	async function importPartnerPublicKey() {
 		if (partnerPublicKey === null && room.guestPublicKey) {
-			if (role === 'owner') {
+			if (roomState === 'owner') {
 				partnerPublicKey = await cryptoUtils.importKey(room.guestPublicKey);
-			} else if (role === 'guest') {
+			} else if (roomState === 'guest') {
 				partnerPublicKey = await cryptoUtils.importKey(room.ownerPublicKey);
 			}
 		}
 	}
-
-	$effect(() => {
-		importPartnerPublicKey();
-	});
 
 	onMount(async () => {
 		keyPair = await storageUtils.loadOrCreateKeyPair();
@@ -77,24 +65,19 @@
 			room = data.room;
 		}
 
-		if (role === 'new-guest') {
+		if (roomState === 'new-guest') {
 			joinRoom();
+		} else if (isAuthorized) {
+			importPartnerPublicKey();
 		}
 	});
 </script>
 
-<div>
-	<h1>Room {data.room.id}</h1>
-	<p>Password required: {data.passwordRequired ? 'Yes' : 'No'}</p>
-</div>
-
-{#if role === 'owner' || role === 'guest'}
-	{#if keyPair && fingerprint}
-		<ChatRoom
-			{room}
-			ownPrivateKey={keyPair.privateKey}
-			partnerPublicKey={partnerPublicKey}
-			{fingerprint}
-		/>
-	{/if}
+{#if isAuthorized && keyPair && fingerprint}
+	<ChatRoom
+		{room}
+		ownPrivateKey={keyPair.privateKey}
+		{partnerPublicKey}
+		{fingerprint}
+	/>
 {/if}
