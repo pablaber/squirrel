@@ -1,6 +1,7 @@
 import type { Cookies } from '@sveltejs/kit';
 import { createHash } from 'node:crypto';
 import { hoursToSeconds } from 'date-fns';
+import { dev } from '$app/environment';
 import { getServerConfig } from '../server-config';
 
 const COOKIE_PREFIX = `sq-`;
@@ -12,8 +13,8 @@ type CookieOptions = Parameters<Cookies['set']>[2];
 const cookieOptions = (options: Partial<CookieOptions> = {}) => ({
 	path: '/',
 	httpOnly: true,
-	secure: true,
-	sameSite: 'strict' as const,
+	secure: !dev,
+	sameSite: 'lax' as const,
 	maxAge: hoursToSeconds(24 * 30),
 	...options
 });

@@ -32,7 +32,7 @@ export const actions = {
 
 		const ownerCryptoKey = await cryptoUtils.importKey(ownerPublicKey);
 		const ownerFingerprint =
-			await cryptoUtils.calculateFingerprint(ownerCryptoKey);
+			await cryptoUtils.calculatePublicKeyFingerprint(ownerCryptoKey);
 
 		const [{ roomId }] = await db()
 			.insert(schema.rooms)

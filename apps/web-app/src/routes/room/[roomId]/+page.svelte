@@ -17,6 +17,10 @@
 	let partnerPublicKey = $state<CryptoKey | null>(null);
 	let fingerprint = $state<string | null>(null);
 	let room = $state(roomData);
+	
+	let isFullRoom = $derived(
+		!!room.guestPublicKey && !!room.ownerPublicKey
+	);
 
 	type RoomState =
 		| 'owner'
@@ -46,7 +50,9 @@
 
 	onMount(async () => {
 		keyPair = await storageUtils.loadOrCreateKeyPair();
-		fingerprint = await cryptoUtils.calculateFingerprint(keyPair.publicKey);
+		fingerprint = await cryptoUtils.calculatePublicKeyFingerprint(
+			keyPair.publicKey
+		);
 		await importPartnerPublicKey();
 	});
 
@@ -75,9 +81,10 @@
 
 {#if isAuthorized && keyPair && fingerprint}
 	<ChatRoom
-		{room}
-		ownPrivateKey={keyPair.privateKey}
-		{partnerPublicKey}
-		{fingerprint}
+	{room}
+	ownPrivateKey={keyPair.privateKey}
+	{partnerPublicKey}
+	{fingerprint}
+	{isFullRoom}
 	/>
 {/if}

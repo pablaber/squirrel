@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Hermes } from '$lib/clients';
-	import { createCryptoUtils, generalUtils } from '$lib/utils';
+	import { createCryptoUtils } from '$lib/utils';
 	import type { types } from '@squirrel/db';
 	import { WsMessage } from '@squirrel/core/messages';
 	import { browser } from '$app/environment';
@@ -23,12 +23,14 @@
 		ownPrivateKey: CryptoKey;
 		partnerPublicKey: CryptoKey | null;
 		fingerprint: string;
+		isFullRoom: boolean;
 	};
 	let {
 		room,
 		ownPrivateKey,
 		partnerPublicKey: partnerPublicKeyProp,
-		fingerprint
+		fingerprint,
+		isFullRoom,
 	}: ChatRoomProps = $props();
 
 	let role = $derived(
@@ -58,11 +60,9 @@
 		fetchPartnerPublicKey();
 	});
 
-	let messageContainer: HTMLDivElement;
+	let messageContainer: HTMLDivElement | null = $state(null);
 	$effect(() => {
-		console.log('effect', messages.length);
 		if (messageContainer && messages.length) {
-			console.log('effect', messages.length);
 			messageContainer.scrollTop = messageContainer.scrollHeight;
 		}
 	});
@@ -191,7 +191,7 @@
 			<h2 class="text-center text-xl font-bold">room {room.id}</h2>
 		</div>
 
-		{#if !partnerPublicKey}
+		{#if !partnerPublicKey && !isFullRoom}
 			<div class="flex flex-1 flex-col items-center justify-center">
 				<span class="text-center text-lg font-bold">Waiting for partner...</span
 				>
@@ -205,19 +205,19 @@
 					<span>copy room link</span>
 				</button>
 			</div>
-		{/if}
-
-		{#if partnerPublicKey}
+		{:else if partnerPublicKey}
 			<div
 				class="no-scrollbar flex-1 overflow-y-auto"
 				bind:this={messageContainer}
 			>
-				<div class="flex flex-col justify-end gap-2 overflow-y-auto">
+				<div class="flex flex-col justify-end overflow-y-auto">
 					{#each messages as message}
 						<ChatMessage {message} {fingerprint} />
 					{/each}
 				</div>
 			</div>
+		{:else}
+			<div class="flex-1"></div>
 		{/if}
 
 		<div class="w-full shrink-0 bg-base-100 pt-5">

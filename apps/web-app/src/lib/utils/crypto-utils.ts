@@ -1,3 +1,6 @@
+import { createFingerprinter } from '@squirrel/core/fingerprinter';
+import type { webcrypto } from 'node:crypto';
+
 export type ECCCurve = 'P-256' | 'P-384' | 'P-521';
 
 /**
@@ -39,7 +42,15 @@ function generateIv(length: number = 16) {
 	return crypto.getRandomValues(new Uint8Array(length));
 }
 
-export function createCryptoUtils(subtle: SubtleCrypto) {
+export function createCryptoUtils(
+	subtle: SubtleCrypto | webcrypto.SubtleCrypto
+) {
+	const fingerprinter = createFingerprinter(subtle);
+
+	async function calculatePublicKeyFingerprint(publicKey: CryptoKey) {
+		return fingerprinter.calculatePublicKeyFingerprint(publicKey);
+	}
+
 	/**
 	 * Derives a key from the supplied public and private keys
 	 */
@@ -154,41 +165,13 @@ export function createCryptoUtils(subtle: SubtleCrypto) {
 		return subtle.digest('SHA-256', new TextEncoder().encode(data));
 	}
 
-	/**
-	 * Calculates a fingerprint for a given CryptoKey.
-	 */
-	async function calculateFingerprint(key: CryptoKey) {
-		// Export the key as a JWK
-		const jwk = await subtle.exportKey('jwk', key);
-
-		// Extract relevant properties from the JWK
-		const keyProperties = {
-			kty: jwk.kty,
-			crv: jwk.crv,
-			x: jwk.x,
-			y: jwk.y
-		};
-
-		// Stringify the sorted JWK
-		const base64JwkString = jsonToBase64(keyProperties);
-
-		// Create a hash of the sorted JWK
-		const hashBuffer = await createHash(base64JwkString);
-
-		// Convert the hash to an array of bytes
-		const hashArray = Array.from(new Uint8Array(hashBuffer));
-
-		// Convert hash array to base64 string
-		return btoa(String.fromCharCode(...hashArray));
-	}
-
 	return {
+		calculatePublicKeyFingerprint,
 		generateEccKeyPair,
 		encryptMessage,
 		decryptMessage,
 		importKey,
 		exportKey,
-		createHash,
-		calculateFingerprint
+		createHash
 	};
 }

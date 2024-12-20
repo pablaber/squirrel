@@ -37,7 +37,8 @@ export async function POST({ request, params }) {
 			{ status: 400 }
 		);
 	}
-	const guestFingerprint = await cryptoUtils.calculateFingerprint(guestKey);
+	const guestFingerprint =
+		await cryptoUtils.calculatePublicKeyFingerprint(guestKey);
 
 	const existingRoom = await db().query.rooms.findFirst({
 		where: (rooms, { eq }) => eq(rooms.id, roomId)
