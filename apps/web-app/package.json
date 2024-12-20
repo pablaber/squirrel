@@ -16,6 +16,7 @@
 	"dependencies": {
 		"@fontsource/pacifico": "^5.1.0",
 		"@fontsource/roboto": "^5.1.0",
+		"@github/relative-time-element": "^4.4.4",
 		"@squirrel/core": "workspace:*",
 		"@squirrel/db": "workspace:*",
 		"date-fns": "^4.1.0",

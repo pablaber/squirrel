@@ -23,7 +23,9 @@ const storageKeyId = (keyId?: string) => {
  * Loads a key pair from storage or generates a new one if it doesn't exist and
  * saves it to storage.
  */
-export async function loadOrCreateKeyPair(keyId?: string): Promise<CryptoKeyPair> {
+export async function loadOrCreateKeyPair(
+	keyId?: string
+): Promise<CryptoKeyPair> {
 	const keyPair = await loadKeyPair(keyId);
 
 	if (keyPair) return keyPair;
@@ -40,7 +42,9 @@ export async function loadOrCreateKeyPair(keyId?: string): Promise<CryptoKeyPair
  * null if the key pair is not found. Will return the base 64 formatted JSON
  * Web Key (JWK) for the private and public keys.
  */
-export async function loadKeyPair(keyId?: string): Promise<CryptoKeyPair | null> {
+export async function loadKeyPair(
+	keyId?: string
+): Promise<CryptoKeyPair | null> {
 	verifyBrowser();
 	const keyPairRaw = localStorage.getItem(storageKeyId(keyId));
 
@@ -66,5 +70,8 @@ export async function saveKeyPair(keyPair: CryptoKeyPair, keyId?: string) {
 	const privateKeyB64Jwk = await cryptoUtils.exportKey(keyPair.privateKey);
 	const publicKeyB64Jwk = await cryptoUtils.exportKey(keyPair.publicKey);
 
-	localStorage.setItem(storageKeyId(keyId), `${privateKeyB64Jwk}:${publicKeyB64Jwk}`);
+	localStorage.setItem(
+		storageKeyId(keyId),
+		`${privateKeyB64Jwk}:${publicKeyB64Jwk}`
+	);
 }

@@ -8,7 +8,8 @@ export const load = async ({ route, cookies, request }) => {
 	const { pathname, search } = new URL(request.url);
 	const serverConfig = getServerConfig();
 	const masterPasswordSet = serverConfig.hashedMasterPassword !== '';
-	const passwordRequired = !NO_AUTH_ROUTES.includes(route.id) && masterPasswordSet;
+	const passwordRequired =
+		!NO_AUTH_ROUTES.includes(route.id) && masterPasswordSet;
 
 	const redirectTo = Buffer.from(`${pathname}${search}`).toString('base64url');
 

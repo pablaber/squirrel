@@ -56,7 +56,9 @@ export class Hermes {
 	/**
 	 * Listens for messages from the room and invokes the callback with the message or error
 	 */
-	onMessage(callback: (message: WsMessage | null, error: WsMessageError | null) => void) {
+	onMessage(
+		callback: (message: WsMessage | null, error: WsMessageError | null) => void
+	) {
 		verifySocket(this.socket);
 		this.socket.addEventListener('message', (event) => {
 			const [error, message] = WsMessage.fromWebSocketString(event.data);
@@ -68,7 +70,9 @@ export class Hermes {
 /**
  * Verifies the given socket exists
  */
-function verifySocket(socket: WebSocket | undefined): asserts socket is WebSocket {
+function verifySocket(
+	socket: WebSocket | undefined
+): asserts socket is WebSocket {
 	if (!socket) {
 		throw new Error('Socket not connected. Call connect() first.');
 	}

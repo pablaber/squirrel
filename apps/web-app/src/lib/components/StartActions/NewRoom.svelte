@@ -11,7 +11,14 @@
 	<p>Create a new room to start chatting now!</p>
 	<div class="card-actions mt-4 flex-shrink justify-start">
 		<form method="POST" action="?/create" use:enhance>
-			<input type="text" hidden aria-hidden={true} name="newRoomId" value={newRoomId} required />
+			<input
+				type="text"
+				hidden
+				aria-hidden={true}
+				name="newRoomId"
+				value={newRoomId}
+				required
+			/>
 			<input
 				type="text"
 				hidden
@@ -20,8 +27,10 @@
 				value={publicKeyBase64Jwk}
 				required
 			/>
-			<button type="submit" disabled={!publicKeyBase64Jwk} class="btn btn-primary"
-				>Create Room</button
+			<button
+				type="submit"
+				disabled={!publicKeyBase64Jwk}
+				class="btn btn-primary">Create Room</button
 			>
 		</form>
 	</div>

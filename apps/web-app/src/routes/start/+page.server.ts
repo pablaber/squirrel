@@ -13,7 +13,9 @@ export const actions = {
 		const password = formData.get('password')?.toString();
 
 		const ownerPublicKey = formData.get('publicKey')?.toString();
-		const hashedPassword = password ? passwordUtils.hashPassword(password) : null;
+		const hashedPassword = password
+			? passwordUtils.hashPassword(password)
+			: null;
 		const newRoomId = formData.get('newRoomId')?.toString();
 
 		if (!newRoomId) {
@@ -29,7 +31,8 @@ export const actions = {
 		}
 
 		const ownerCryptoKey = await cryptoUtils.importKey(ownerPublicKey);
-		const ownerFingerprint = await cryptoUtils.calculateFingerprint(ownerCryptoKey);
+		const ownerFingerprint =
+			await cryptoUtils.calculateFingerprint(ownerCryptoKey);
 
 		const [{ roomId }] = await db()
 			.insert(schema.rooms)

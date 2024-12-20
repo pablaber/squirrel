@@ -15,7 +15,9 @@
 		}
 	});
 
-	const redirectTo = $derived(new URLSearchParams($page.url.searchParams).get('redirectTo'));
+	const redirectTo = $derived(
+		new URLSearchParams($page.url.searchParams).get('redirectTo')
+	);
 </script>
 
 <div class="flex h-screen flex-col items-center justify-center">
@@ -35,7 +37,13 @@
 						placeholder="password"
 						class="input input-bordered w-full"
 					/>
-					<button type="submit" class="btn btn-primary mt-1 px-8">Submit</button>
+					<button
+						type="submit"
+						disabled={password.length === 0}
+						class="btn btn-primary mt-1 px-8"
+					>
+						Submit
+					</button>
 				</div>
 			</form>
 		</div>

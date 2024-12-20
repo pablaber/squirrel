@@ -60,6 +60,9 @@ importers:
       '@fontsource/roboto':
         specifier: ^5.1.0
         version: 5.1.0
+      '@github/relative-time-element':
+        specifier: ^4.4.4
+        version: 4.4.4
       '@squirrel/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -955,6 +958,9 @@ packages:
 
   '@fontsource/roboto@5.1.0':
     resolution: {integrity: sha512-cFRRC1s6RqPygeZ8Uw/acwVHqih8Czjt6Q0MwoUoDe9U3m4dH1HmNDRBZyqlMSFwgNAUKgFImncKdmDHyKpwdg==}
+
+  '@github/relative-time-element@4.4.4':
+    resolution: {integrity: sha512-Oi8uOL8O+ZWLD7dHRWCkm2cudcTYtB3VyOYf9BtzCgDGm+OKomyOREtItNMtWl1dxvec62BTKErq36uy+RYxQg==}
 
   '@hono/node-server@1.13.7':
     resolution: {integrity: sha512-kTfUMsoloVKtRA2fLiGSd9qBddmru9KadNyhJCwgKBxTiNkaAJEwkVN9KV/rS4HtmmNRtUh6P+YpmjRMl0d9vQ==}
@@ -3221,6 +3227,8 @@ snapshots:
   '@fontsource/pacifico@5.1.0': {}
 
   '@fontsource/roboto@5.1.0': {}
+
+  '@github/relative-time-element@4.4.4': {}
 
   '@hono/node-server@1.13.7(hono@4.6.14)':
     dependencies:
