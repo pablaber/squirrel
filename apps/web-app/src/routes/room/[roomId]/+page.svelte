@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createCryptoUtils, storageUtils } from '$lib/utils';
 	import { onMount } from 'svelte';
-	import { ChatRoom } from '$lib/components';
+	import { ChatRoom, AccessDenied } from '$lib/components';
 	import { browser } from '$app/environment';
 
 	let cryptoUtils: ReturnType<typeof createCryptoUtils>;
@@ -79,7 +79,13 @@
 	});
 </script>
 
-{#if isAuthorized && keyPair && fingerprint}
+<svelte:head>
+	<title>Squirrel - {room.id}</title>
+</svelte:head>
+
+{#if roomState === 'not-authorized'}
+	<AccessDenied />
+{:else if isAuthorized && keyPair && fingerprint}
 	<ChatRoom
 	{room}
 	ownPrivateKey={keyPair.privateKey}
