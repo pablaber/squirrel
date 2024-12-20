@@ -193,11 +193,12 @@
 
 		{#if !partnerPublicKey}
 			<div class="flex flex-1 flex-col items-center justify-center">
-				<span class="text-center text-lg font-bold">Waiting for partner...</span>
+				<span class="text-center text-lg font-bold">Waiting for partner...</span
+				>
 				<img
 					src="/assets/squirrel-waiting.png"
 					alt="Loading"
-					class="w-72 rounded-lg my-5"
+					class="my-5 w-72 rounded-lg"
 				/>
 				<button class="btn btn-primary" onclick={copyRoomLink}>
 					<svg.Link size={24} />
@@ -235,7 +236,7 @@
 </div>
 
 {#if showToast}
-	<div in:fade out:fade class="toast toast-bottom toast-center mb-16">
+	<div in:fade out:fade class="toast toast-center toast-bottom mb-16">
 		<div class="alert alert-success">
 			<span>Room link copied to clipboard.</span>
 		</div>

@@ -32,11 +32,7 @@
 		</div>
 	</div>
 {:else if message.type === 'server'}
-	<span class="text-md my-2 text-center text-gray-500"
-		>{message.content}</span
-	>
+	<span class="text-md my-2 text-center text-gray-500">{message.content}</span>
 {:else if message.type === 'error'}
-	<span class="text-md my-2text-center text-red-500"
-		>{message.content}</span
-	>
+	<span class="text-md my-2text-center text-red-500">{message.content}</span>
 {/if}
