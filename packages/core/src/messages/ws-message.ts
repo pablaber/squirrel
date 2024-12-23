@@ -50,7 +50,7 @@ export class WsMessage {
     let messageJson;
     try {
       messageJson = JSON.parse(str);
-    } catch (error) {
+    } catch {
       return [
         new WsMessageError(
           "Failed to parse message from web socket string",

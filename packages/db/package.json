@@ -14,6 +14,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "lint": "eslint .",
     "check-types": "tsc --noEmit",
     "env:local": "cp .env.local .env",
     "env:production": "cp .env.production .env",
@@ -31,6 +32,7 @@
     "pg": "^8.13.1"
   },
   "devDependencies": {
+    "@squirrel/eslint-config": "workspace:*",
     "@types/pg": "^8.11.10",
     "drizzle-kit": "^0.30.1",
     "tsx": "^4.19.2",

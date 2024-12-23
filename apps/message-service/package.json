@@ -5,10 +5,12 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
+    "lint": "eslint .",
     "check-types": "tsc --noEmit",
     "start": "tsx main.ts",
     "dev": "tsx watch main.ts | pino-pretty",
-    "turbo:build": "turbo build --filter=message-service"
+    "turbo:build": "turbo build --filter=message-service",
+    "ci:checks": "pnpm run lint && pnpm run check-types"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +27,7 @@
     "zod": "~3.24.1"
   },
   "devDependencies": {
+    "@squirrel/eslint-config": "workspace:*",
     "@types/node": "~22.10.2",
     "pino-pretty": "~13.0.0",
     "tsx": "~4.19.2",

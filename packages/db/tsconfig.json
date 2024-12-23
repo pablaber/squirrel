@@ -25,6 +25,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
+  "exclude": ["dist/**", "eslint.config.js", "eslint.config.ts"],
   "$schema": "https://json.schemastore.org/tsconfig",
   "_version": "2.0.0"
 }

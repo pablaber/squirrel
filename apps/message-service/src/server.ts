@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { createNodeWebSocket } from "@hono/node-ws";
 import type { WSContext } from "hono/ws";
 import { db, schema } from "@squirrel/db";
+import { sql } from "drizzle-orm";
 import { WsMessage } from "@squirrel/core";
 import { WebSocketService } from "./web-socket-service";
 import { logger } from "./logger";
@@ -12,7 +13,29 @@ const app = new Hono();
 const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({ app });
 
 app.get("/", (c) => {
-  return c.text("Hello World!");
+  return c.text("Hello Squirrel!");
+});
+
+app.get("/health", async (c) => {
+  try {
+    await db()
+      .select({ value: sql`1` })
+      .from(schema.messages)
+      .limit(1);
+    return c.json({
+      status: "ok",
+      message: "Everything is working fine",
+    });
+  } catch (error) {
+    logger.error(error);
+    return c.json(
+      {
+        status: "error",
+        message: "Database is not available",
+      },
+      503
+    );
+  }
 });
 
 const webSocketService = new WebSocketService();

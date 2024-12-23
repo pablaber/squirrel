@@ -11,8 +11,14 @@
     "check-types": {
       "dependsOn": ["^check-types"]
     },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
     "test": {
       "dependsOn": ["^test"]
+    },
+    "ci:checks": {
+      "dependsOn": ["^ci:checks"]
     }
   }
 }

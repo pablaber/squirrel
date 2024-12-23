@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { redirect } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
 	import StartCard from './StartCard.svelte';
 

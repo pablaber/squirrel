@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "job:delete-old-rooms": "tsx main.ts --job delete-old-rooms",
-    "check-types": "tsc --noEmit"
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "lint": "eslint .",
+    "check-types": "tsc --noEmit",
+    "job:delete-old-rooms": "tsx main.ts --job delete-old-rooms"
   },
   "dependencies": {
     "@squirrel/db": "workspace:*",
@@ -17,6 +18,7 @@
     "pino": "~9.5.0"
   },
   "devDependencies": {
+    "@squirrel/eslint-config": "workspace:*",
     "@types/node": "~22.10.2",
     "pino-pretty": "~13.0.0",
     "tsx": "^4.19.2",

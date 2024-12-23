@@ -11,16 +11,14 @@
 
 	const { data } = $props();
 
-	const { room: roomData, passwordRequired } = data;
+	const { room: roomData } = data;
 
 	let keyPair = $state<CryptoKeyPair | null>(null);
 	let partnerPublicKey = $state<CryptoKey | null>(null);
 	let fingerprint = $state<string | null>(null);
 	let room = $state(roomData);
-	
-	let isFullRoom = $derived(
-		!!room.guestPublicKey && !!room.ownerPublicKey
-	);
+
+	let isFullRoom = $derived(!!room.guestPublicKey && !!room.ownerPublicKey);
 
 	type RoomState =
 		| 'owner'
@@ -87,10 +85,10 @@
 	<AccessDenied />
 {:else if isAuthorized && keyPair && fingerprint}
 	<ChatRoom
-	{room}
-	ownPrivateKey={keyPair.privateKey}
-	{partnerPublicKey}
-	{fingerprint}
-	{isFullRoom}
+		{room}
+		ownPrivateKey={keyPair.privateKey}
+		{partnerPublicKey}
+		{fingerprint}
+		{isFullRoom}
 	/>
 {/if}

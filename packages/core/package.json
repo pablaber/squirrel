@@ -24,6 +24,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "lint": "eslint .",
     "check-types": "tsc --noEmit",
     "test": "vitest"
   },
@@ -35,6 +36,7 @@
     "zod": "~3.24.1"
   },
   "devDependencies": {
+    "@squirrel/eslint-config": "workspace:*",
     "@types/node": "~22.10.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",

@@ -30,7 +30,7 @@
 		ownPrivateKey,
 		partnerPublicKey: partnerPublicKeyProp,
 		fingerprint,
-		isFullRoom,
+		isFullRoom
 	}: ChatRoomProps = $props();
 
 	let role = $derived(
@@ -40,7 +40,6 @@
 	$inspect(room);
 
 	let hermes: Hermes = $state(new Hermes({ roomId: room.id, fingerprint }));
-	let connected = $state(false);
 	let currentMessage = $state('');
 	let messages = $state<RoomMessage[]>([]);
 	let partnerPublicKey: CryptoKey | null = $state(partnerPublicKeyProp);
@@ -138,7 +137,6 @@
 	onMount(async () => {
 		// Connect to the hermes websocket
 		await hermes.connect();
-		connected = true;
 
 		hermes.onMessage((message, error) => {
 			if (error || !message) {
