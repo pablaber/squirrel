@@ -12,6 +12,40 @@ importers:
         specifier: ^2.3.3
         version: 2.3.3
 
+  apps/jobs:
+    dependencies:
+      '@squirrel/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      commander:
+        specifier: ^12.1.0
+        version: 12.1.0
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
+      drizzle-orm:
+        specifier: ^0.38.2
+        version: 0.38.2(@types/pg@8.11.10)(pg@8.13.1)
+      pino:
+        specifier: ~9.5.0
+        version: 9.5.0
+    devDependencies:
+      '@types/node':
+        specifier: ~22.10.2
+        version: 22.10.2
+      pino-pretty:
+        specifier: ~13.0.0
+        version: 13.0.0
+      tsx:
+        specifier: ^4.19.2
+        version: 4.19.2
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.2
+
   apps/message-service:
     dependencies:
       '@hono/node-server':
@@ -29,6 +63,9 @@ importers:
       dotenv:
         specifier: ~16.4.7
         version: 16.4.7
+      drizzle-orm:
+        specifier: ^0.38.2
+        version: 0.38.2(@types/pg@8.11.10)(pg@8.13.1)
       hono:
         specifier: ~4.6.14
         version: 4.6.14
@@ -1436,6 +1473,10 @@ packages:
 
   colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
+
+  commander@12.1.0:
+    resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
+    engines: {node: '>=18'}
 
   commander@4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
@@ -3710,6 +3751,8 @@ snapshots:
   color-name@1.1.4: {}
 
   colorette@2.0.20: {}
+
+  commander@12.1.0: {}
 
   commander@4.1.1: {}
 

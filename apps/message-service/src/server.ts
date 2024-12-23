@@ -5,6 +5,7 @@ import { db, schema } from "@squirrel/db";
 import { WsMessage } from "@squirrel/core";
 import { WebSocketService } from "./web-socket-service";
 import { logger } from "./logger";
+import { addMessageToDatabase } from "./database";
 
 const app = new Hono();
 
@@ -51,28 +52,7 @@ app.get(
             fingerprint,
             message.toWebSocketString()
           );
-          db()
-            .insert(schema.messages)
-            .values({
-              id: message.id,
-              roomId: message.roomId,
-              sender: message.sender,
-              content: message.content,
-              ts: message.ts,
-            })
-            .then(() => {
-              logger.debug({
-                message: "saved message to database",
-                messageId: message.id,
-              });
-            })
-            .catch((error: unknown) => {
-              logger.error({
-                message: "failed to save message to database",
-                error,
-              });
-              // TODO: send error to client about db save
-            });
+          addMessageToDatabase(message);
         } else {
           const errorMessage = createErrorMessage();
           webSocketService.sendMessageToRoom(
