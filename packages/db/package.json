@@ -16,6 +16,7 @@
     "build": "tsc",
     "lint": "eslint .",
     "check-types": "tsc --noEmit",
+    "ci": "pnpm run lint && pnpm run check-types",
     "env:local": "cp .env.local .env",
     "env:production": "cp .env.production .env",
     "db:generate": "pnpm run env:local && drizzle-kit generate --config ./src/drizzle.config.ts",
@@ -27,6 +28,7 @@
   "license": "ISC",
   "dependencies": {
     "@squirrel/core": "workspace:*",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.2",
     "pg": "^8.13.1"

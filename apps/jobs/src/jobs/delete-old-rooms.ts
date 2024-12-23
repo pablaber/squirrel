@@ -1,14 +1,12 @@
 import { db, schema } from "@squirrel/db";
 import { lt, inArray } from "drizzle-orm";
-import { subDays } from "date-fns";
 import { logger } from "../utils/logger";
 
 export async function deleteOldRooms() {
-  const deleteCutoff = subDays(new Date(), 7);
   const matchingRooms = await db()
     .select()
     .from(schema.rooms)
-    .where(lt(schema.rooms.createdAt, deleteCutoff));
+    .where(lt(schema.rooms.expires, new Date()));
 
   const { rowCount: deletedMessages } = await db()
     .delete(schema.messages)

@@ -1,6 +1,9 @@
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { ids } from "@squirrel/core";
+import { addDays } from "date-fns";
+
+const DEFAULT_EXPIRATION_DAYS = 7;
 
 export const users = pgTable("users", {
   id: text("id")
@@ -19,6 +22,9 @@ export const rooms = pgTable("rooms", {
   ownerFingerprint: text("owner_fingerprint").notNull(),
   guestPublicKey: text("guest_public_key"),
   guestFingerprint: text("guest_fingerprint"),
+  expires: timestamp("expires").$defaultFn(() =>
+    addDays(new Date(), DEFAULT_EXPIRATION_DAYS)
+  ),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
 });
