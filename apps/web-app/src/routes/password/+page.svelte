@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
+	import { Alert } from '$lib/components/svg';
+	
 	let { form } = $props();
-
 	let password = $state('');
 	let errorMessage = $state(form?.errorMessage);
-
+	
 	$effect(() => {
 		if (errorMessage) {
 			const timer = setTimeout(() => {
@@ -52,19 +53,7 @@
 	<div class="flex h-20 flex-col items-center justify-end">
 		{#if errorMessage}
 			<div out:fade role="alert" class="alert alert-error">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-6 w-6 shrink-0 stroke-current"
-					fill="none"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-					/>
-				</svg>
+				<Alert />
 				<span>{`auth failed: ${errorMessage}`}</span>
 			</div>
 		{/if}
