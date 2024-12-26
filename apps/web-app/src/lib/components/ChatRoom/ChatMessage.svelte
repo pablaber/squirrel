@@ -6,7 +6,6 @@
 		message: RoomMessage;
 		fingerprint: string;
 	}>();
-	console.log(message.sender, fingerprint);
 </script>
 
 {#if message.type === 'client' && message.sender === fingerprint}

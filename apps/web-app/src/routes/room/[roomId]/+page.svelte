@@ -13,12 +13,13 @@
 	const { data } = $props();
 	const roomId = $page.params.roomId;
 
-	const { room: roomData, passwordRequired } = data;
+	const { room: roomData, passwordRequired: passwordRequiredData } = data;
 
 	let keyPair = $state<CryptoKeyPair | null>(null);
 	let partnerPublicKey = $state<CryptoKey | null>(null);
 	let fingerprint = $state<string | null>(null);
 	let room = $state(roomData);
+	let passwordRequired = $state(passwordRequiredData);
 
 	let isFullRoom = $derived(!!room?.guestPublicKey && !!room?.ownerPublicKey);
 
@@ -31,6 +32,7 @@
 		| 'not-authorized';
 
 	let roomState: RoomState = $derived.by(() => {
+		console.log('derived.by', room, passwordRequired);
 		if (room === null || passwordRequired) return 'password-required';
 		if (!keyPair || !fingerprint) return 'loading';
 		if (room.ownerFingerprint === fingerprint) return 'owner';
@@ -38,6 +40,7 @@
 		if (room.guestFingerprint === fingerprint) return 'guest';
 		return 'not-authorized';
 	});
+	$inspect(roomState);
 	let isAuthorized = $derived(roomState === 'owner' || roomState === 'guest');
 
 	async function importPartnerPublicKey() {
@@ -67,6 +70,7 @@
 		});
 		const data = await response.json();
 		room = data.room;
+		passwordRequired = data.passwordRequired;
 	}
 
 	onMount(async () => {
