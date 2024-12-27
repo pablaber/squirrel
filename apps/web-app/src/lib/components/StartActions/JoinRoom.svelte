@@ -2,8 +2,6 @@
 	import { goto } from '$app/navigation';
 	import StartCard from './StartCard.svelte';
 
-	let { disabled }: { disabled: boolean } = $props();
-
 	let roomId = $state('');
 </script>
 
@@ -19,7 +17,7 @@
 		/>
 		<button
 			onclick={() => goto(`/room/${roomId}`)}
-			disabled={roomId.length === 0 || disabled}
+			disabled={roomId.length === 0}
 			class="btn btn-primary">Join Room</button
 		>
 	</div>

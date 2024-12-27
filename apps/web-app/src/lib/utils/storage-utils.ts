@@ -10,12 +10,13 @@ function verifyBrowser() {
 }
 
 const KEY_PAIR_PREFIX = 'sq-ks-';
+export const DEFAULT_KEY_ID = 'main';
 
 /**
  * Generates a storage key ID for the given key ID. Uses "main" as default.
  */
 const storageKeyId = (keyId?: string) => {
-	const keyIdFinal = keyId || 'main';
+	const keyIdFinal = keyId || DEFAULT_KEY_ID;
 	return `${KEY_PAIR_PREFIX}${keyIdFinal}`;
 };
 

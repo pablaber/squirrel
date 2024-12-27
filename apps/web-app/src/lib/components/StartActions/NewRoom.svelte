@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { ids } from '@squirrel/core';
+	import { userKeys } from '$lib/state.svelte';
 	import StartCard from './StartCard.svelte';
-	import { Key } from '../svg';
-	let { publicKeyBase64Jwk }: { publicKeyBase64Jwk: string | null } = $props();
-	let newRoomId = $state(ids.generateRoomId());
+	import { Key } from '$lib/components/svg';
+
 	let showPasswordInput = $state(false);
 	let password = $state('');
+	let keyPair = $derived(userKeys.main);
+
 	function onUsePasswordClick() {
 		showPasswordInput = !showPasswordInput;
 	}
@@ -21,22 +22,13 @@
 				type="text"
 				hidden
 				aria-hidden={true}
-				name="newRoomId"
-				value={newRoomId}
-				required
-			/>
-
-			<input
-				type="text"
-				hidden
-				aria-hidden={true}
 				name="publicKey"
-				value={publicKeyBase64Jwk}
+				value={keyPair?.publicKeyBase64Jwk}
 				required
 			/>
 			<button
 				type="submit"
-				disabled={!publicKeyBase64Jwk}
+				disabled={!keyPair?.publicKeyBase64Jwk}
 				class="btn btn-primary">Create Room</button
 			>
 			<button

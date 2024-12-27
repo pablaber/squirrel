@@ -128,7 +128,7 @@ export function createCryptoUtils(
 	}
 
 	/**
-	 * Exports a key as a JWK.
+	 * Exports a key as a base64 encoded JWK.
 	 */
 	async function exportKey(key: CryptoKey) {
 		const jwk = await subtle.exportKey('jwk', key);

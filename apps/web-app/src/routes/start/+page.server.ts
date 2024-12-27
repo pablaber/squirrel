@@ -1,5 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import { db, schema } from '@squirrel/db';
+import { ids } from '@squirrel/core';
 import { createCryptoUtils } from '$lib/utils';
 import { passwordUtils, cookieUtils } from '$lib/server/utils';
 import crypto from 'node:crypto';
@@ -16,13 +17,7 @@ export const actions = {
 		const hashedPassword = password
 			? passwordUtils.hashPassword(password)
 			: null;
-		const newRoomId = formData.get('newRoomId')?.toString();
-
-		if (!newRoomId) {
-			throw error(400, {
-				message: 'Room ID is required'
-			});
-		}
+		const newRoomId = ids.generateRoomId();
 
 		if (!ownerPublicKey) {
 			throw error(400, {
