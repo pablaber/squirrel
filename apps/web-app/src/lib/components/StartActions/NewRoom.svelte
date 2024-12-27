@@ -39,15 +39,15 @@
 				{showPasswordInput ? 'Hide Password' : 'Use Password'}
 			</button>
 			{#if showPasswordInput}
-			<label class="input input-bordered flex items-center gap-2 mt-2">
-				<Key />
-				<input
-					type="text"
-					value={password}
-					name="password"
-					placeholder="Room Password"
-				/>
-			</label>
+				<label class="input input-bordered mt-2 flex items-center gap-2">
+					<Key />
+					<input
+						type="text"
+						value={password}
+						name="password"
+						placeholder="Room Password"
+					/>
+				</label>
 			{/if}
 		</form>
 	</div>

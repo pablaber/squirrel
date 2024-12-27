@@ -2,11 +2,11 @@
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import { Alert } from '$lib/components/svg';
-	
+
 	let { form } = $props();
 	let password = $state('');
 	let errorMessage = $state(form?.errorMessage);
-	
+
 	$effect(() => {
 		if (errorMessage) {
 			const timer = setTimeout(() => {
