@@ -5,11 +5,10 @@
 	import type { types } from '@squirrel/db';
 	import { WsMessage } from '@squirrel/core/messages';
 	import { browser } from '$app/environment';
-
+	import { fade } from 'svelte/transition';
 	import { svg } from '$lib/components';
 	import ChatMessage from './ChatMessage.svelte';
 	import type { RoomMessage } from './types';
-	import { fade } from 'svelte/transition';
 
 	const TOAST_DURATION = 2000;
 
@@ -20,15 +19,15 @@
 
 	type ChatRoomProps = {
 		room: types.RoomWithMessages;
-		ownPrivateKey: CryptoKey;
 		partnerPublicKey: CryptoKey | null;
+		ownPrivateKey: CryptoKey;
 		fingerprint: string;
 		isFullRoom: boolean;
 	};
 	let {
 		room,
-		ownPrivateKey,
 		partnerPublicKey: partnerPublicKeyProp,
+		ownPrivateKey,
 		fingerprint,
 		isFullRoom
 	}: ChatRoomProps = $props();
@@ -39,12 +38,13 @@
 
 	$inspect(room);
 
-	let hermes: Hermes = $state(new Hermes({ roomId: room.id, fingerprint }));
+	let hermes = $state(new Hermes({ roomId: room.id, fingerprint }));
 	let currentMessage = $state('');
 	let messages = $state<RoomMessage[]>([]);
 	let partnerPublicKey: CryptoKey | null = $state(partnerPublicKeyProp);
 	let showToast = $state(false);
 
+	// Toast timeout
 	$effect(() => {
 		if (showToast) {
 			const timeout = setTimeout(() => {
