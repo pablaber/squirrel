@@ -26,22 +26,24 @@ export const load = async ({ params, ...rest }) => {
 	}
 
 	const bakery = cookieUtils.init(cookies);
-	const cookiePassword = bakery.getRoomIdCookie(roomId);
+	const roomInfoCookie = bakery.getRoomIdCookie(roomId);
 
-	if (!cookiePassword) {
+	console.log('roomInfoCookie', roomInfoCookie);
+
+	if (!roomInfoCookie || !roomInfoCookie.password) {
 		return {
-			room,
+			room: null,
 			passwordRequired: true
 		};
 	}
 
 	const correctPasswordHash = passwordUtils.verifyPassword(
-		cookiePassword,
+		roomInfoCookie.password,
 		room.password
 	);
 
 	return {
-		room,
+		room: correctPasswordHash ? room : null,
 		passwordRequired: !correctPasswordHash
 	};
 };
