@@ -1,11 +1,6 @@
-import { pino } from "pino";
+import { createLogger, normalizeLogLevel } from "@squirrel/core/logger";
 
-const logLevel = process.env.LOG_LEVEL || "info";
-
-export const logger = pino({
-  level: logLevel,
-  base: {
-    hostname: undefined,
-    pid: undefined,
-  },
+export const logger = createLogger({
+  app: "jobs",
+  level: normalizeLogLevel(process.env.LOG_LEVEL),
 });

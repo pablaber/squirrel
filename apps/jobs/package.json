@@ -7,10 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 0",
     "lint": "eslint .",
     "check-types": "tsc --noEmit",
-    "job:delete-old-rooms": "tsx main.ts --job delete-old-rooms"
+    "job:delete-old-rooms": "tsx main.ts --job delete-old-rooms",
+    "job:delete-old-rooms:dry-run": "tsx main.ts --job delete-old-rooms --dry-run"
   },
   "dependencies": {
     "@squirrel/db": "workspace:*",
+    "@squirrel/core": "workspace:*",
     "commander": "^12.1.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
