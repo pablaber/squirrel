@@ -9,6 +9,7 @@
     "check-types": "tsc --noEmit",
     "job:delete-old-rooms": "tsx main.ts --job delete-old-rooms",
     "job:delete-old-rooms:dry-run": "tsx main.ts --job delete-old-rooms --dry-run",
+    "build": "tsc",
     "start": "tsx main.ts --schedule"
   },
   "dependencies": {
