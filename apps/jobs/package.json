@@ -8,20 +8,23 @@
     "lint": "eslint .",
     "check-types": "tsc --noEmit",
     "job:delete-old-rooms": "tsx main.ts --job delete-old-rooms",
-    "job:delete-old-rooms:dry-run": "tsx main.ts --job delete-old-rooms --dry-run"
+    "job:delete-old-rooms:dry-run": "tsx main.ts --job delete-old-rooms --dry-run",
+    "start": "tsx main.ts --schedule"
   },
   "dependencies": {
-    "@squirrel/db": "workspace:*",
     "@squirrel/core": "workspace:*",
+    "@squirrel/db": "workspace:*",
     "commander": "^12.1.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.2",
+    "node-schedule": "^2.1.1",
     "pino": "~9.5.0"
   },
   "devDependencies": {
     "@squirrel/eslint-config": "workspace:*",
     "@types/node": "~22.10.2",
+    "@types/node-schedule": "^2.1.7",
     "pino-pretty": "~13.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"

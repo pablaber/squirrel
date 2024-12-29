@@ -1,6 +1,10 @@
 import { db, schema } from "@squirrel/db";
 import { lt, inArray, count } from "drizzle-orm";
 import { logger } from "../utils/logger";
+import type { Job } from "../types";
+
+// Every 30 minutes
+const CHRON_SCHEDULE = "*/30 * * * *";
 
 /**
  * Deletes old rooms that have expired as well as all messages that were in
@@ -74,7 +78,7 @@ async function deleteOldRoomsBase(options: { dryRun: boolean }) {
  * Deletes old rooms that have expired as well as all messages that were in
  * those rooms.
  */
-export async function deleteOldRooms(options: {
+async function deleteOldRooms(options: {
   dryRun: boolean;
 }): Promise<{ success: boolean }> {
   try {
@@ -85,3 +89,8 @@ export async function deleteOldRooms(options: {
     return { success: false };
   }
 }
+
+export const deleteOldRoomsJob: Job = {
+  schedule: CHRON_SCHEDULE,
+  handler: deleteOldRooms,
+};
