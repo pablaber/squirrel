@@ -49,4 +49,4 @@ jobs:
             -X POST \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
-            https://api.coolify.io/v1/apps/deploy?uuid=$APP_IDS
+            https://app.coolify.io/api/v1/deploy?uuid=$APP_IDS
