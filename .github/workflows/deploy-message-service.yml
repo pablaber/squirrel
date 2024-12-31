@@ -61,25 +61,27 @@ jobs:
       - name: Deploy Message Service
         run: |
           # Initialize empty APP_IDS array
-          APP_IDS=()
+          APP_IDS=""
 
           if [ "${{ inputs.deploy_message_service }}" = "true" ]; then
             echo "Deploying Message Service"
-            APP_IDS+=(${{ secrets.MESSAGE_SERVICE_APP_ID }})
+            APP_IDS="${APP_IDS}${{ secrets.MESSAGE_SERVICE_APP_ID }},"
           fi
           if [ "${{ inputs.deploy_web_client }}" = "true" ]; then
             echo "Deploying Web Client"
-            APP_IDS+=(${{ secrets.WEB_CLIENT_APP_ID }})
+            APP_IDS="${APP_IDS}${{ secrets.WEB_CLIENT_APP_ID }},"
           fi
           if [ "${{ inputs.deploy_job_runner }}" = "true" ]; then
             echo "Deploying Job Runner"
-            APP_IDS+=(${{ secrets.JOB_RUNNER_APP_ID }})
+            APP_IDS="${APP_IDS}${{ secrets.JOB_RUNNER_APP_ID }},"
           fi
-          # Echo the number of apps to deploy
-          echo "Deploying ${#APP_IDS[@]} apps"
 
-          export APP_IDS_STRING=${{ join(',', APP_IDS) }}
-          export FULL_URL="https://coolify.pacon.dev/api/v1/deploy?uuid=$APP_IDS_STRING"
+          # Remove trailing comma if it exists
+          APP_IDS=${APP_IDS%,}
+
+          echo "Number of apps to deploy: $(echo $APP_IDS | tr -cd ',' | wc -c)"
+
+          export FULL_URL="https://coolify.pacon.dev/api/v1/deploy?uuid=$APP_IDS"
           curl \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
             "$FULL_URL"
