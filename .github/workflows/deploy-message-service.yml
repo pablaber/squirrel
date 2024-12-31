@@ -44,7 +44,8 @@ jobs:
     steps:
       - name: Deploy Message Service
         run: |
-          APP_IDS=${{ secrets.MESSAGE_SERVICE_APP_ID }}
+          export APP_IDS=${{ secrets.MESSAGE_SERVICE_APP_ID }}
+          export FULL_URL="$COOLIFY_DEPLOY_WEBHOOK_URL?uuid=$APP_IDS"
           curl \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
-            "$COOLIFY_DEPLOY_WEBHOOK_URL?uuid=$APP_IDS"
+            "$FULL_URL"
