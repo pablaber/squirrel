@@ -45,7 +45,7 @@ jobs:
       - name: Deploy Message Service
         run: |
           export APP_IDS=${{ secrets.MESSAGE_SERVICE_APP_ID }}
-          export FULL_URL="$COOLIFY_DEPLOY_WEBHOOK_URL?uuid=$APP_IDS"
+          export FULL_URL="https://coolify.pacon.dev/api/v1/deploy?uuid=$APP_IDS"
           curl \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
             "$FULL_URL"
