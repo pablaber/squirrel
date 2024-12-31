@@ -79,8 +79,6 @@ jobs:
           # Remove trailing comma if it exists
           APP_IDS=${APP_IDS%,}
 
-          echo "Number of apps to deploy: $(echo $APP_IDS | tr -cd ',' | wc -c)"
-
           export FULL_URL="https://coolify.pacon.dev/api/v1/deploy?uuid=$APP_IDS"
           curl \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
