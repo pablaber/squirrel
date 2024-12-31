@@ -4,6 +4,22 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      deploy_message_service:
+        description: 'Deploy Message Service'
+        type: boolean
+        default: true
+        required: false
+      deploy_web_client:
+        description: 'Deploy Web Client'
+        type: boolean
+        default: false
+        required: false
+      deploy_job_runner:
+        description: 'Deploy Job Runner'
+        type: boolean
+        default: false
+        required: false
 
 jobs:
   checks:
@@ -44,8 +60,26 @@ jobs:
     steps:
       - name: Deploy Message Service
         run: |
-          export APP_IDS=${{ secrets.MESSAGE_SERVICE_APP_ID }}
-          export FULL_URL="https://coolify.pacon.dev/api/v1/deploy?uuid=$APP_IDS"
+          # Initialize empty APP_IDS array
+          APP_IDS=()
+
+          if [ "${{ inputs.deploy_message_service }}" = "true" ]; then
+            echo "Deploying Message Service"
+            APP_IDS+=(${{ secrets.MESSAGE_SERVICE_APP_ID }})
+          fi
+          if [ "${{ inputs.deploy_web_client }}" = "true" ]; then
+            echo "Deploying Web Client"
+            APP_IDS+=(${{ secrets.WEB_CLIENT_APP_ID }})
+          fi
+          if [ "${{ inputs.deploy_job_runner }}" = "true" ]; then
+            echo "Deploying Job Runner"
+            APP_IDS+=(${{ secrets.JOB_RUNNER_APP_ID }})
+          fi
+          # Echo the number of apps to deploy
+          echo "Deploying ${#APP_IDS[@]} apps"
+
+          export APP_IDS_STRING=${{ join(',', APP_IDS) }}
+          export FULL_URL="https://coolify.pacon.dev/api/v1/deploy?uuid=$APP_IDS_STRING"
           curl \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
             "$FULL_URL"
