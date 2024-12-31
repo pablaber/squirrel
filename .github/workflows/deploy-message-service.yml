@@ -63,15 +63,15 @@ jobs:
           # Initialize empty APP_IDS array
           APP_IDS=""
 
-          if [ "${{ inputs.deploy_message_service }}" = "true" ]; then
+          if [ "${{ github.event_name == 'push' || inputs.deploy_message_service }}" = "true" ]; then
             echo "Deploying Message Service"
             APP_IDS="${APP_IDS}${{ secrets.MESSAGE_SERVICE_APP_ID }},"
           fi
-          if [ "${{ inputs.deploy_web_client }}" = "true" ]; then
+          if [ "${{ github.event_name == 'push' || inputs.deploy_web_client }}" = "true" ]; then
             echo "Deploying Web Client"
             APP_IDS="${APP_IDS}${{ secrets.WEB_CLIENT_APP_ID }},"
           fi
-          if [ "${{ inputs.deploy_job_runner }}" = "true" ]; then
+          if [ "${{ github.event_name == 'push' || inputs.deploy_job_runner }}" = "true" ]; then
             echo "Deploying Job Runner"
             APP_IDS="${APP_IDS}${{ secrets.JOB_RUNNER_APP_ID }},"
           fi
